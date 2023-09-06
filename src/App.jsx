@@ -1,9 +1,10 @@
 import { useState } from 'react';
+
 function TodoList() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
   const [newDatetime, setNewDatetime] = useState('');
-  const [newPriority, setNewPriority] = useState('low');
+  const [newPriority, setNewPriority] = useState('A');
   const [editedTask, setEditedTask] = useState('');
 
   const addTask = (task, datetime, priority, isEditing = false, isComplete = false) => {
@@ -63,16 +64,54 @@ function TodoList() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (newTask === '') {
+      alert('Please enter a task!');
+      return;
+    }
+
     addTask(newTask, newDatetime, newPriority);
     setNewTask('');
     setNewDatetime('');
-    setNewPriority('low');
+    setNewPriority('A');
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Todo List</h1>
-      <ul className="space-y-2">
+    <div className="container mx-auto p-4 bg-gradient-to-r from-green-400 to-blue-500 min-h-screen">
+      <h1 className=" font-bold mb-4 text-center text-white mt-8 text-[30px]">Todo List</h1>
+      <form onSubmit={handleSubmit} className="mt-4 flex justify-center mb-4 max-sm:flex-col space-y-2">
+        <input
+          type="text"
+          value={newTask}
+          onChange={(e) => setNewTask(e.target.value)}
+          placeholder="Add a new task"
+          className="border p-2 rounded-md mr-2 h-10 mt-2"
+        />
+        <input
+          type="datetime-local"
+          value={newDatetime}
+          onChange={handleDatetimeChange}
+          className="border p-2 rounded-md mr-2"
+        />
+        <select
+          value={newPriority}
+          onChange={handlePriorityChange}
+          className="border p-2 rounded-md mr-2"
+        >
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+          <option value="F">F</option>
+        </select>
+        <button
+          type="submit"
+          className="bg-green-500 hover:bg-blue-600 text-white px-4 py-2 mr-2 rounded-md border-solid border-2 border-white"
+        >
+          Add Task
+        </button>
+      </form>
+      <ul className="space-y-2 ml-10 mr-10 max-sm:mr-1 max-sm:ml-1">
         {tasks.map((task, index) => (
           <li key={index} className={`bg-white p-2 rounded-md shadow ${task.isComplete ? 'line-through' : ''}`}>
             <input
@@ -95,12 +134,7 @@ function TodoList() {
                 <span className="ml-2 text-gray-500">Priority: {task.priority}</span>
               </>
             )}
-            <button
-              className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 ml-2 rounded-md"
-              onClick={() => deleteTask(index)}
-            >
-              Delete
-            </button>
+            
             {task.isEditing ? (
               <button
                 className="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 ml-2 rounded-md"
@@ -116,39 +150,15 @@ function TodoList() {
                 Edit
               </button>
             )}
+            <button
+              className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 ml-2 rounded-md"
+              onClick={() => deleteTask(index)}
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>
-      <form onSubmit={handleSubmit} className="mt-4">
-        <input
-          type="text"
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-          placeholder="Add a new task"
-          className="border p-2 rounded-md mr-2"
-        />
-        <input
-          type="datetime-local"
-          value={newDatetime}
-          onChange={handleDatetimeChange}
-          className="border p-2 rounded-md mr-2"
-        />
-        <select
-          value={newPriority}
-          onChange={handlePriorityChange}
-          className="border p-2 rounded-md"
-        >
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
-        >
-          Add Task
-        </button>
-      </form>
     </div>
   );
 }
