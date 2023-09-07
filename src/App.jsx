@@ -78,7 +78,7 @@ function TodoList() {
 
   return (
     <div className="container mx-auto p-4 bg-gradient-to-r from-green-400 to-blue-500 min-h-screen">
-      <h1 className=" font-bold mb-4 text-center text-white mt-8 text-[30px]">Todo List</h1>
+      <h1 className=" font-bold mb-4 text-center text-white mt-8 text-[50px]">Todo List</h1>
       <form onSubmit={handleSubmit} className="mt-4 flex justify-center mb-4 max-sm:flex-col space-y-2">
         <input
           type="text"
